@@ -1,0 +1,176 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("img/bg-anime.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  filter: blur(3px);
+  z-index: -1;
+}
+
+h1 {
+  font-size: 3em;
+  margin-bottom: 0.5em;
+}
+
+.banner {
+  margin-right: 5px;
+  width: 100%;
+  height: 250px;
+  border-radius: 10px 10px 0 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border: 3px solid #ffffff;
+}
+
+.contenido {
+  width: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: #ffffff 3px solid;
+  /* text-shadow: 0px 1px 1px 1px rgb(255, 255, 255); */
+  /* -webkit-text-stroke: .4px rgb(0, 0, 0); */
+  color: white;
+  border-radius: 0 0 10px 10px;
+}
+
+.texto {
+  font-size: 1.2em;
+  text-align: justify;
+  p .sipnosis {
+    line-height: 1.6;
+    text-shadow: -1px -1px 0 #000,
+      /* Sombra superior-izquierda */ 1px -1px 0 #000,
+      /* Sombra superior-derecha */ -1px 1px 0 #000,
+      /* Sombra inferior-izquierda */ 1px 1px 0 #000; /* Sombra inferior-derecha */
+  }
+}
+
+/* FONDOS DEL CONTENIDO */
+.contenido {
+  background-image: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.5),
+      rgba(0, 0, 0, 0.2)
+    ),
+    var(--b-url);
+    background-size: cover;
+    
+}
+.contenido-pancreas {
+  --b-url: url("img/anime/I\ Want\ to\ Eat\ Your\ Pancreas/Background.jpg");
+}
+.contenido-voice {
+  --b-url: url("img/anime/A\ Silence\ Voice/Background.jpg");
+}
+.contenido-your-name {
+  --b-url: url("img/anime/Your\ name/Background.jpg");
+}
+.contenido-tenki-no-ko {
+  --b-url: url("img/anime/Tenki-no-Ko/Background.jpg");
+}
+.contenido-hells-paradise {
+  --b-url: url("img/anime/Hells-Paradise/Background.jpg");
+}
+.contenido-relife {
+  --b-url: url("img/anime/ReLIFE/bg.jpg");
+}
+.contenido-fuufu {
+  --b-url: url("img/anime/Fuufu/bg.jpg");
+}
+.contenido-yamada {
+  --b-url: url("img/anime/yamada/bg.jpg");
+}
+.contenido-plastic {
+  --b-url: url("img/anime/plastic/bh.jpg");
+}
+.contenido-oregairu {
+  --b-url: url("img/anime/oregairu/bg.jpg");
+}
+.contenido-gimai {
+  --b-url: url("img/anime/gimai/bg.jpg");
+}
+.contenido-bunny-girl {
+  --b-url: url("img/anime/bunny-girl/bg.jpg");
+}
+.contenido-horimiya {
+  --b-url: url("img/anime/horimiya/bg.jpg");
+}
+.contenido-dress-up-darling {
+  --b-url: url("img/anime/dress-up-darling/bg.jpg");
+}
+.contenido-toradora {
+  --b-url: url("img/anime/toradora/bg.jpg");
+}
+.contenido-frieren {
+  --b-url: url("img/anime/frieren/bg.jpg");
+}
+.contenido-tonikaku {
+  --b-url: url("img/anime/tonikaku/bg.jpg");
+}
+
+.logo {
+  background-color: transparent;
+  width: 300px;
+  height: auto;
+}
+
+.rating-5 {
+  font-size: 24px;
+}
+
+.estrellas {
+  font-size: 24px;
+  /* Las estrellas por defecto se ven grises (fondo) */
+  color: #ccc;
+  /* Evita que el texto de las estrellas se seleccione */
+  user-select: none;
+  /* Crea un fondo dorado sobre las estrellas */
+  background: linear-gradient(
+    to right,
+    gold var(--puntuacion),
+    #ccc var(--puntuacion)
+  );
+  background-clip: text;
+  color: transparent; /* Fallback para otros navegadores */
+}
+
+.puntuacion-numero {
+  /* font-size: 16px; */
+  color: white;
+}
+
+.footer {
+  /* Permalink - use to edit and share this gradient. Enlace permanente - úsalo para editar y compartir este gradiente: https://colorzilla.com/gradient-editor/#000000+1,000000+100&0+0,0.65+100 */
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.01) 1%,
+    rgba(0, 0, 0, 0.65) 100%
+  ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  width: 100%;
+}
+
+/* -----------------------------------*/
+/*          Mobile Screen */
+/* -----------------------------------*/
+
+.container-mobile {
+  /* max-width: 600px; */
+  width: 400px;
+  margin: 0 auto;
+  padding: 10px;
+  font-size: 1rem;
+}
