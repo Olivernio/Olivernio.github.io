@@ -72,6 +72,9 @@ h1 {
 .contenido-pancreas {
   --b-url: url("img/anime/I\ Want\ to\ Eat\ Your\ Pancreas/Background.jpg");
 }
+.contenido-solo-leveling {
+  --b-url: url("img/anime/Solo-Leveling/bg.jpg");
+}
 .contenido-voice {
   --b-url: url("img/anime/A\ Silence\ Voice/Background.jpg");
 }
