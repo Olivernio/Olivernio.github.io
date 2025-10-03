@@ -17,7 +17,8 @@
 </head>
 
 <body>
-  <h1 class="h1 text-light mb-5 text-center container"><span>Recomendaciones de Anime</span></h1>
+  <h1 class="h1 text-light text-center container"><span>Recomendaciones de Anime</span></h1>
+  <h6 class="h6 text-light mb-5 text-center"><span>v0.3</span></h6>
 
   <main class="main container-mobile">
     <!-- SOLO LEVELING -->
@@ -1283,10 +1284,11 @@
         <p class="solo-sub">Elige temporada y formato. Toca un botón para abrir el enlace.</p>
       </div>
 
-      <div class="d-grid gap-2">
-        <button class="btn mt-2 btn-outline-light btn-season active" data-season="s1">Temporada 1</button>
-        <button class="btn mt-2 btn-outline-light btn-season" data-season="s2">Temporada 2</button>
-        <button class="btn mt-2 btn-outline-light btn-season" data-season="movie">Película</button>
+      <div class="solo-season-select mt-2">
+        <button id="soloSeasonTrigger" class="solo-select-btn" aria-haspopup="dialog" aria-expanded="false">
+          <span class="solo-select-label">Temporada 1</span>
+          <span class="solo-select-chev">▾</span>
+        </button>
       </div>
 
       <div class="solo-links mt-3" id="soloLinks">
@@ -1302,6 +1304,22 @@
       </div>
     </div>
   </div>
+  <!-- Fullscreen season menu (appears above overlay) -->
+  <div id="soloSeasonMenu" class="solo-season-menu" aria-hidden="true">
+    <div class="solo-season-menu-backdrop" id="seasonMenuBackdrop"></div>
+    <div class="solo-season-menu-panel" role="dialog" aria-modal="true">
+      <!-- <button id="closeSeasonMenu" aria-label="Cerrar menu"></button> -->
+      <div class="solo-season-menu-header text-center">
+        <h3>Seleccionar Temporada / Película</h3>
+        <p class="text-muted small">Elige una opción para ver los enlaces de descarga</p>
+      </div>
+      <div class="solo-season-menu-list">
+        <button class="solo-season-option" data-season="s1">Temporada 1</button>
+        <button class="solo-season-option" data-season="s2">Temporada 2</button>
+        <button class="solo-season-option" data-season="movie">Película</button>
+      </div>
+    </div>
+  </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
     crossorigin="anonymous"></script>
@@ -1313,11 +1331,16 @@
       const backdrop = document.getElementById('soloBackdrop');
       const closeBtn = document.getElementById('closeSoloOverlay');
       const linksContainer = document.getElementById('soloLinks');
-      const seasonButtons = document.querySelectorAll('.btn-season');
+      const seasonTrigger = document.getElementById('soloSeasonTrigger');
+      const seasonMenu = document.getElementById('soloSeasonMenu');
+      const seasonMenuBackdrop = document.getElementById('seasonMenuBackdrop');
+      const closeSeasonMenuBtn = document.getElementById('closeSeasonMenu');
+      const seasonOptions = document.querySelectorAll('.solo-season-option');
 
+      // basic validation: if critical elements missing, don't wire up interactive behavior
       if (!openBtn || !overlay || !backdrop || !closeBtn || !linksContainer) {
         console.warn('Solo Overlay: elementos faltantes', { openBtn, overlay, backdrop, closeBtn, linksContainer });
-        return; // no continuamos para evitar errores
+        return;
       }
 
       const DATA = {
@@ -1376,8 +1399,10 @@
           overlay.classList.add('open');
         });
         overlay.setAttribute('aria-hidden', 'false');
-        setBodyScroll(true);
-        populateLinks('s1');
+  setBodyScroll(true);
+  // ensure trigger label reflects the initial season
+  try { const lbl = seasonTrigger.querySelector('.solo-select-label'); if (lbl) lbl.textContent = 'Temporada 1'; } catch(e) {}
+  populateLinks('s1');
         // initial fade in for links
         linksContainer.classList.remove('fade-out');
         requestAnimationFrame(() => linksContainer.classList.add('fade-in'));
@@ -1436,7 +1461,7 @@
           a.href = it.href;
           a.target = '_blank';
           a.rel = 'noopener noreferrer';
-          a.textContent = 'Descargar / Abrir';
+          a.textContent = 'Descargar';
           card.appendChild(meta);
           card.appendChild(a);
           linksContainer.appendChild(card);
@@ -1447,21 +1472,50 @@
       closeBtn.addEventListener('click', closeOverlay);
       backdrop.addEventListener('click', closeOverlay);
 
-      if (seasonButtons && seasonButtons.length) {
-        seasonButtons.forEach(btn => {
-          btn.addEventListener('click', function () {
-            seasonButtons.forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
+      // Season menu trigger opens a fullscreen menu with options
+      function openSeasonMenu() {
+        seasonMenu.style.display = 'flex';
+        seasonMenu.setAttribute('aria-hidden', 'false');
+        seasonTrigger.setAttribute('aria-expanded', 'true');
+        seasonMenu.classList.remove('closing');
+        requestAnimationFrame(() => seasonMenu.classList.add('open'));
+        document.documentElement.classList.add('no-scroll');
+      }
+      function closeSeasonMenu() {
+        seasonMenu.classList.remove('open');
+        seasonMenu.classList.add('closing');
+        seasonMenu.setAttribute('aria-hidden', 'true');
+        seasonTrigger.setAttribute('aria-expanded', 'false');
+        const onEnd = function () {
+          seasonMenu.style.display = 'none';
+          seasonMenu.classList.remove('closing');
+          document.documentElement.classList.remove('no-scroll');
+          seasonMenu.removeEventListener('animationend', onEnd);
+        };
+        seasonMenu.addEventListener('animationend', onEnd);
+      }
+
+      seasonTrigger.addEventListener('click', openSeasonMenu);
+      if (seasonMenuBackdrop) seasonMenuBackdrop.addEventListener('click', closeSeasonMenu);
+      if (closeSeasonMenuBtn) closeSeasonMenuBtn.addEventListener('click', closeSeasonMenu);
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && seasonMenu.getAttribute('aria-hidden') === 'false') closeSeasonMenu();
+      });
+
+      if (seasonOptions && seasonOptions.length) {
+        seasonOptions.forEach(opt => {
+          opt.addEventListener('click', function () {
             const key = this.getAttribute('data-season');
-            // animate fade out -> populate -> fade in
+            const label = this.textContent || 'Temporada';
+            const lbl = seasonTrigger.querySelector('.solo-select-label');
+            if (lbl) lbl.textContent = label;
+            closeSeasonMenu();
             linksContainer.classList.remove('fade-in');
             linksContainer.classList.add('fade-out');
             const onTrans = function (e) {
-              // only handle opacity transition
-              if (e.propertyName !== 'opacity') return;
+              if (e.propertyName && e.propertyName !== 'opacity') return;
               linksContainer.removeEventListener('transitionend', onTrans);
               populateLinks(key);
-              // ensure DOM updated then fade in
               requestAnimationFrame(() => {
                 linksContainer.classList.remove('fade-out');
                 linksContainer.classList.add('fade-in');

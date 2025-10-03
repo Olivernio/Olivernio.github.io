@@ -207,7 +207,8 @@ html.no-scroll {
   position: relative;
   width: 92%;
   max-width: 420px;
-  max-height: calc(100vh - 48px);
+  max-height: 650px;
+  min-height: 650px;
   height: auto;
   border-radius: 18px;
   overflow: hidden;
@@ -292,9 +293,101 @@ html.no-scroll {
 .solo-link-title { font-weight: 700; margin: 0; }
 .solo-link-sub { font-size: 0.85rem; opacity: 0.9; margin: 0; }
 
+/* Compact select to replace season buttons on mobile */
+.solo-season-select { width: 100%; display: block; }
+.solo-select {
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03)) !important;
+  border: 1px solid rgba(255,255,255,0.12) !important;
+  color: #fff !important;
+  padding: 10px 14px !important;
+  border-radius: 10px !important;
+  font-weight: 600 !important;
+  box-shadow: inset 0 -1px 0 rgba(0,0,0,0.2) !important;
+}
+.solo-season-select { position: relative; }
+.solo-season-select::after {
+  content: '\25BE'; /* small chevron */
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255,255,255,0.9);
+  pointer-events: none;
+}
+
+/* trigger button */
+.solo-select-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+  border: 1px solid rgba(255,255,255,0.12);
+  color: #fff;
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-weight: 700;
+}
+.solo-select-btn .solo-select-label { font-size: 1rem; }
+.solo-select-chev { opacity: 0.9; margin-left: 8px; }
+
+/* Fullscreen season menu styles */
+.solo-season-menu {
+  position: fixed;
+  inset: 0;
+  display: none;
+  z-index: 2500;
+  align-items: center;
+  justify-content: center;
+}
+.solo-season-menu.open { display: flex; }
+.solo-season-menu-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(6px) saturate(120%);
+}
+.solo-season-menu-panel {
+  position: relative;
+  width: 100%;
+  max-width: 720px;
+  margin: 20px;
+  background: linear-gradient(180deg, rgba(20,20,20,0.96), rgba(10,10,10,0.98));
+  border-radius: 14px;
+  padding: 18px;
+  z-index: 2510;
+  color: #fff;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+  transform: translateY(12px) scale(.995);
+  opacity: 0;
+}
+.solo-season-menu.open .solo-season-menu-panel { opacity: 1; transform: translateY(0) scale(1); }
+.solo-season-menu.open .solo-season-menu-panel { animation: panel-in 260ms cubic-bezier(.2,.9,.2,1) both; }
+.solo-season-menu.closing .solo-season-menu-panel { animation: panel-out 180ms ease-in both; }
+.solo-season-menu-header h3 { margin: 6px 0 2px; }
+.solo-season-menu-list { display: flex; gap: 12px; flex-direction: column; margin-top: 12px; }
+.solo-season-option {
+  padding: 14px 12px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.06);
+  font-weight: 700;
+  text-align: left;
+}
+.solo-season-option:active { transform: translateY(1px); }
+
+/* ensure menu panel animation keyframes available (reuse panel-in/out defined earlier) */
+
+
 /* Make layout comfortably touch-friendly on small phones */
 @media (max-width: 420px) {
   .container-mobile { width: 360px; }
   .solo-overlay-panel { width: 96%; padding: 12px; border-radius: 14px; }
   .solo-logo { max-width: 120px; }
+  .solo-select { padding: 10px 12px; }
+  .solo-season-menu-panel { width: calc(100% - 28px); max-width: calc(100% - 28px); margin: 12px; border-radius: 12px; }
 }
