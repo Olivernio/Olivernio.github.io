@@ -1355,8 +1355,14 @@
         ]
       };
 
+      // robust mobile-friendly scroll lock using position:fixed
+      // simpler scroll lock using a class (better behaved on many mobiles)
       function setBodyScroll(disable) {
-        document.body.style.overflow = disable ? 'hidden' : '';
+        if (disable) {
+          document.documentElement.classList.add('no-scroll');
+        } else {
+          document.documentElement.classList.remove('no-scroll');
+        }
       }
 
       // Animation-aware open/close
@@ -1376,7 +1382,16 @@
         linksContainer.classList.remove('fade-out');
         requestAnimationFrame(() => linksContainer.classList.add('fade-in'));
         setTimeout(() => {
-          if (closeBtn.focus) closeBtn.focus();
+          try {
+            if (closeBtn.focus) {
+              // prevent unwanted scroll when focusing (modern browsers)
+              if (typeof closeBtn.focus === 'function') {
+                try { closeBtn.focus({ preventScroll: true }); } catch(e) { closeBtn.focus(); }
+              } else {
+                closeBtn.focus();
+              }
+            }
+          } catch (e) { /* ignore */ }
         }, 150);
       }
 
@@ -1391,7 +1406,11 @@
           overlay.style.display = 'none';
           overlay.classList.remove('closing');
           setBodyScroll(false);
-          if (openBtn && openBtn.focus) openBtn.focus();
+          try {
+            if (openBtn && openBtn.focus) {
+              try { openBtn.focus({ preventScroll: true }); } catch(e) { openBtn.focus(); }
+            }
+          } catch (e) { /* ignore */ }
           overlay.removeEventListener('animationend', onEnd);
         };
         overlay.addEventListener('animationend', onEnd);

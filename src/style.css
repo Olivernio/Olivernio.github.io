@@ -186,6 +186,13 @@ h1 {
   z-index: 2000;
   align-items: center;
   justify-content: center;
+  min-height: 100vh;
+  padding: 12px; /* breathing room on mobile */
+}
+
+/* Prevent document scroll when overlay is open (applied to <html>) */
+html.no-scroll {
+  overflow: hidden !important;
 }
 .solo-overlay[aria-hidden="false"] {
   display: flex;
@@ -200,7 +207,8 @@ h1 {
   position: relative;
   width: 92%;
   max-width: 420px;
-  height: 86vh;
+  max-height: calc(100vh - 48px);
+  height: auto;
   border-radius: 18px;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0,0,0,0.6);
