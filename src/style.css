@@ -177,3 +177,116 @@ h1 {
   padding: 10px;
   font-size: 1rem;
 }
+
+/* Solo Leveling overlay styles (mobile-first) */
+.solo-overlay {
+  position: fixed;
+  inset: 0;
+  display: none;
+  z-index: 2000;
+  align-items: center;
+  justify-content: center;
+}
+.solo-overlay[aria-hidden="false"] {
+  display: flex;
+}
+.solo-overlay-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(4px);
+}
+.solo-overlay-panel {
+  position: relative;
+  width: 92%;
+  max-width: 420px;
+  height: 86vh;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  z-index: 2010;
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+  background-image: linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.65)), url("img/anime/Solo-Leveling/bg.jpg");
+  background-size: cover;
+  background-position: center;
+  padding: 14px;
+}
+
+/* Animations */
+.solo-overlay.open { display: flex; }
+.solo-overlay .solo-overlay-backdrop { opacity: 0; }
+.solo-overlay.open .solo-overlay-backdrop { animation: backdrop-in 280ms cubic-bezier(.2,.9,.2,1) both; }
+.solo-overlay.closing .solo-overlay-backdrop { animation: backdrop-out 180ms ease-in both; }
+
+.solo-overlay .solo-overlay-panel { transform: translateY(10px) scale(.995); opacity: 0; }
+.solo-overlay.open .solo-overlay-panel { animation: panel-in 320ms cubic-bezier(.2,.9,.2,1) both; }
+.solo-overlay.closing .solo-overlay-panel { animation: panel-out 220ms ease-in both; }
+
+@keyframes backdrop-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes backdrop-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+@keyframes panel-in {
+  from { transform: translateY(18px) scale(.98); opacity: 0; }
+  to { transform: translateY(0) scale(1); opacity: 1; }
+}
+@keyframes panel-out {
+  from { transform: translateY(0) scale(1); opacity: 1; }
+  to { transform: translateY(12px) scale(.995); opacity: 0; }
+}
+
+/* Links fade when switching seasons */
+.solo-links { transition: opacity 180ms ease, transform 180ms ease; }
+.solo-links.fade-out { opacity: 0; transform: translateY(8px); }
+.solo-links.fade-in { opacity: 1; transform: translateY(0); }
+.solo-close {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  z-index: 2020;
+  background: rgba(255,255,255,0.08);
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+}
+.solo-logo {
+  max-width: 140px;
+  margin: 6px auto 0 auto;
+}
+.solo-title { font-size: 1.1rem; margin: 6px 0; }
+.solo-sub { font-size: 0.85rem; opacity: 0.9; margin-bottom: 8px; }
+/* .solo-season-select { gap: 8px; } */
+.btn-season { flex: 1 1 auto; font-weight: 600; border-radius: 10px; }
+.btn-season.active { background: rgba(255,215,0,0.95); color: #000; border-color: rgba(255,215,0,0.95); }
+.solo-links { overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 6px; }
+.solo-link-card {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  background: rgba(0,0,0,0.35);
+  border-radius: 12px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+.solo-link-card .btn {
+  white-space: nowrap;
+}
+.solo-link-meta { flex: 1; }
+.solo-link-title { font-weight: 700; margin: 0; }
+.solo-link-sub { font-size: 0.85rem; opacity: 0.9; margin: 0; }
+
+/* Make layout comfortably touch-friendly on small phones */
+@media (max-width: 420px) {
+  .container-mobile { width: 360px; }
+  .solo-overlay-panel { width: 96%; padding: 12px; border-radius: 14px; }
+  .solo-logo { max-width: 120px; }
+}
